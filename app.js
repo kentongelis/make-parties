@@ -28,10 +28,18 @@ app.get('/events/new', (req, res) => {
 
 app.post('/events', (req, res) => {
     models.Event.create(req.body).then(event => {
-        res.redirect('/');
+        res.redirect(`/events/${event.id}`);
     }).catch((err) => {
         console.log(err)
     });
+})
+
+app.get('/events/:id', (req, res) => {
+    models.Event.findByPk(req.params.id).then((event) => {
+        res.render('events-show', { event: event })
+    }).catch((err) => {
+        console.log(err.message);
+    })
 })
 
 const port = process.env.PORT || 3000;
